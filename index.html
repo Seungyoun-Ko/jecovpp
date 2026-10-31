@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ko" class="static">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JECO 통합 모니터링</title>
+<link rel="icon" href="./favicon.svg">
+<link rel="stylesheet" href="./hub.css">
+<style>
+  html.static #to, html.static .date { display: none !important; }
+  .gate { position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; background: var(--page); color: var(--ink); padding: 16px; }
+  .gate-box { width: min(380px, 100%); display: flex; flex-direction: column; gap: 12px; padding: 24px; border-radius: 12px; background: var(--surface); border: 1px solid var(--ring); box-shadow: 0 6px 24px rgba(0,0,0,.12); }
+  .gate-box h1 { margin: 0; font-size: 20px; }
+  .gate-box label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; }
+  .gate-box input { font: inherit; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--axis); background: transparent; color: inherit; }
+  .gate-box .small { font-size: 12px; margin: 0; }
+  .gate-box .btn.primary { background: var(--accent); color: #fff; border-color: transparent; padding: 10px; font-weight: 600; }
+  .gate-box .logo { width: 28px; height: 28px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side" id="side">
+    <div class="brand">
+      <span class="logo" aria-hidden="true"></span>
+      <div><b>JECO 통합 모니터링</b><small>중개 · 발전 · 시장 · 전략</small></div>
+    </div>
+    <nav id="nav" aria-label="파트">
+      <p class="nav-group">운영</p>
+      <a href="#overview" data-part="overview"><span class="ic">◎</span>종합 상황판</a>
+      <a href="#livegen" data-part="livegen"><span class="ic">⚡</span>실시간 발전 (발전기별)</a>
+      <a href="#market" data-part="market"><span class="ic">₩</span>전력시장</a>
+      <a href="#daforecast" data-part="daforecast"><span class="ic">◷</span>하루전 SMP 예측 (입찰)</a>
+      <a href="#genforecast" data-part="genforecast"><span class="ic">☁</span>발전량 예측 · 변경입찰</a>
+      <a href="#broker" data-part="broker"><span class="ic">⇄</span>중개사업 (집합자원)</a>
+      <a href="#fleet" data-part="fleet"><span class="ic">⚡</span>발전사업 (JECO 설비)</a>
+      <a href="#dispatch" data-part="dispatch"><span class="ic">⇣</span>급전 · 낙찰 대비 지시</a>
+      <p class="nav-group">관리</p>
+      <a href="#finance" data-part="finance"><span class="ic">∑</span>정산 · 수익</a>
+      <a href="#compliance" data-part="compliance"><span class="ic">✓</span>규정 준수</a>
+      <p class="nav-group">전략</p>
+      <a href="#bizdev" data-part="bizdev"><span class="ic">✦</span>사업모델 발굴</a>
+      <a href="#joinsim" data-part="joinsim"><span class="ic">⊕</span>편입 우선순위 · 급전시험</a>
+    </nav>
+    <div class="side-foot">
+      <div id="collect-state" class="muted">수집 상태 확인 중…</div>
+      </div>
+  </aside>
+  <main class="main">
+    <header class="top">
+      <button class="menu" id="menu" type="button" aria-label="메뉴">☰</button>
+      <div class="title">
+        <h1 id="part-title">종합 상황판</h1>
+        <p id="part-sub" class="muted"></p>
+      </div>
+      <div class="ctrl">
+        <div class="seg" id="range" role="group" aria-label="기간">
+          <button type="button" data-days="7">7일</button>
+          <button type="button" data-days="14" class="on">14일</button>
+          <button type="button" data-days="30">30일</button>
+          <button type="button" data-days="90">90일</button>
+        </div>
+        <label class="date">기준일 <input type="date" id="to"></label>
+        <button type="button" id="dl" class="btn" title="이 화면의 표를 CSV(엑셀)로 내려받기">⬇</button>
+        <button type="button" id="reload" class="btn" title="다시 불러오기">↻</button>
+        <button type="button" id="theme" class="btn" title="밝게/어둡게">◐</button>
+      </div>
+    </header>
+    <div id="view" class="view" aria-live="polite"></div>
+    <footer class="foot muted" id="foot"></footer>
+  </main>
+</div>
+<div id="tip" class="tip" role="tooltip" hidden></div>
+<div id="gate" class="gate">
+  <form id="gate-form" class="gate-box" autocomplete="off">
+    <span class="logo" aria-hidden="true"></span>
+    <h1>JECO 통합 모니터링</h1>
+    <p class="muted">게시 시각 <b id="gate-at">확인 중…</b> · 영업정보 — 사내 사용</p>
+    <label>화면 암호 <input type="password" id="gate-pass" autocomplete="current-password" required autofocus></label>
+    <button type="submit" class="btn primary" id="gate-go">열기</button>
+    <p id="gate-msg" class="muted" role="status"></p>
+    <p class="muted small">암호는 이 브라우저 안에서 자료를 푸는 데만 쓰이고 어디에도 저장·전송되지 않습니다. 탭을 닫으면 사라집니다.</p>
+  </form>
+</div>
+<script type="module" src="./boot.mjs"></script>
+</body>
+</html>
